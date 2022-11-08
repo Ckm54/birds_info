@@ -52,3 +52,26 @@ func getBirdHandler(w http.ResponseWriter, r *http.Request) {
 	// else write json list of birds to the response
 	w.Write(birdListBytes)
 }
+
+func createBirdHandler(w http.ResponseWriter, r *http.Request) {
+	bird := Bird{}
+
+	// parse the form values
+	err := r.ParseForm()
+
+	// handle error
+	if err != nil {
+		fmt.Println(fmt.Errorf("error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	bird.Species = r.Form.Get("species")
+	bird.Description = r.Form.Get("description")
+
+	// append existing list of birds with a new entry
+	birds = append(birds, bird)
+
+	// redirect user to the original page located at /assets/
+	http.Redirect(w, r, "/assets/", http.StatusFound)
+}
