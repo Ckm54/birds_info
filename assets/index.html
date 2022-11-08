@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The bird encyclopedia</title>
+</head>
+<body>
+  <h1>The bird encyclopedia</h1>
+
+  <table>
+    <tr>
+      <th>Species</th>
+      <th>Description</th>
+    </tr>
+    <td>pigeon</td>
+    <td>Common in cities</td>
+  </table>
+  <br>
+
+  <form action="/bird" method="post">
+    Species:
+    <input type="text" name="species">
+    <br>
+    Description
+    <input type="text" name="description">
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <!-- fetch a list of birds and add them to the table display -->
+
+  <script>
+    const birdTable = document.querySelector("table");
+
+    fetch("/bird").then(response => response.json()).then(birdList => {
+      birdList.forEach(bird => {
+        const row = document.createElement("tr");
+        const species = document.createElement("td");
+        species.innerHTML = bird.species;
+        const description = document.createElement("td");
+        description.innerHTML = bird.description;
+
+        // add the data elements to the row
+        row.appendChild(species);
+        row.appendChild(description);
+
+        // add row element to the table itself
+        birdTable.appendChild(row);
+      });
+    })
+  </script>
+  
+</body>
+</html>
